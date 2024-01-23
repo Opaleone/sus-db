@@ -1,0 +1,35 @@
+User: {
+  id: INT,
+  guilds: [
+    GID: {
+      data: [
+        {
+          date: INT,
+          size: INT,
+          status: STRING
+        },
+        {
+          date: INT,
+          size: INT,
+          status: STRING
+        },
+      ],
+      average: INT
+    },
+    GID: {
+      data: [
+        {
+          date: INT,
+          size: INT,
+          status: STRING
+        },
+        {
+          date: INT,
+          size: INT,
+          status: STRING
+        },
+      ],
+      average: INT
+    },
+  ]
+}
