@@ -13,7 +13,7 @@ userRouter.get('/', async (req, res, next) => {
     res.status(200).send({ users: users });
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} ::user - get (Path: '/')::\n`;
+    const msg = `${todayDate}: ${e.message} :: user - get (Path: '/') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);
@@ -41,7 +41,7 @@ userRouter.get('/:userId/:userName', async (req, res, next) => {
     res.send({ user: user })
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} ::user - get (Path: '/userId/userName')::\n`;
+    const msg = `${todayDate}: ${e.message} :: user - get (Path: '/userId/userName') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);
@@ -51,7 +51,7 @@ userRouter.get('/:userId/:userName', async (req, res, next) => {
   }
 })
 
-userRouter.put('/:userid/:userName', async (req, res, next) => {
+userRouter.post('/:userid/:userName', async (req, res, next) => {
   const { userId, userName } = req.params;
 
   try {
@@ -65,7 +65,7 @@ userRouter.put('/:userid/:userName', async (req, res, next) => {
     res.status(200).send({ message: 'User created!'});
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} ::user - put (Path: '/userId/userName')::\n`;
+    const msg = `${todayDate}: ${e.message} :: user - put (Path: '/userId/userName') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);
@@ -75,4 +75,4 @@ userRouter.put('/:userid/:userName', async (req, res, next) => {
   }
 })
 
-module.exports
+module.exports = userRouter;
