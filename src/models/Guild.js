@@ -4,24 +4,11 @@ const Guild = db.define(
   'Guild',
   {
     guildId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false
     },
-    data: {
-      date: {
-        type: DataTypes.DATE,
-        defaultValue: new Date()
-      },
-      size: DataTypes.INTEGER,
-      status: DataTypes.STRING
-    },
-    userId: {
-      type: DataTypes.BIGINT,
-      references: {
-        model: 'user',
-        key: 'userId'
-      }
-    }
+    checkAmount: DataTypes.INTEGER,
+    channelId: DataTypes.BIGINT,
   }
 )
 
