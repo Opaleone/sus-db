@@ -8,7 +8,19 @@ const Check = db.define(
       defaultValue: new Date()
     },
     size: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    guildId: {
+      type: DataTypes.BIGINT,
+      set(gid) {
+        this.setDataValue('guildId', gid);
+      }
+    },
+    userId: {
+      type: DataTypes.BIGINT,
+      set(uid) {
+        this.setDataValue('userId', uid);
+      }
+    },
   }
 )
 
