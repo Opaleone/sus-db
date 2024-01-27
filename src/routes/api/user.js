@@ -2,7 +2,7 @@ const express = require('express');
 const userRouter = express.Router();
 const fs = require('fs')
 
-const { User } = require('../../models/User');
+const { User } = require('../../models');
 
 userRouter.get('/', async (req, res, next) => {
   try {

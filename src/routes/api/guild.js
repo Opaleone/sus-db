@@ -1,8 +1,9 @@
 const express = require('express');
 const guildRouter = express.Router();
+const db = require('../../../db/connection');
 const fs = require('fs')
 
-const { Guild } = require('../../models/Guild');
+const { Guild } = require('../../models/');
 
 guildRouter.get('/', async (req, res, next) => {
   try {
@@ -25,7 +26,11 @@ guildRouter.get('/:guildId', async (req, res, next) => {
   const { guildId } = req.params;
 
   try {
-    const getGuild = await Guild.findByPk({guildId: guildId});
+    const getGuild = await Guild.findOne({
+      where: {
+        guildId: guildId
+      }
+    });
 
     if (!getGuild) {
       throw new Error(`No guild with id of ${guildId}`);

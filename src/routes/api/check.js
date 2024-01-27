@@ -2,7 +2,7 @@ const express = require('express');
 const checkRouter = express.Router();
 const fs = require('fs')
 
-const { Check } = require('../../models/Check');
+const { Check } = require('../../models');
 
 checkRouter.get('/', async (req, res, next) => {
   try {
