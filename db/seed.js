@@ -1,4 +1,4 @@
-const { User, Guild } = require('../src/models');
+const { User, Guild, Check } = require('../src/models');
 const { db } = require('../db/connection');
 
 (async function seed() {
@@ -38,16 +38,49 @@ const { db } = require('../db/connection');
     }
   ]
 
+  const checks = [
+    {
+      size: 12,
+      status: 'hard'
+    },
+    {
+      size: 15,
+      status: 'hard'
+    },
+    {
+      size: 2,
+      status: 'soft'
+    },
+    {
+      size: 8,
+      status: 'hard'
+    },
+    {
+      size: 5,
+      status: 'soft'
+    },
+    {
+      size: 9,
+      status: 'hard'
+    }
+  ]
+
 
   await db.sync({ force: true });
   const userCreate = await User.bulkCreate(users);
   const guildCreate = await Guild.bulkCreate(guilds);
+  const checkCreate = await Check.bulkCreate(checks);
 
-  guildCreate[0].addUsers(userCreate[0]);
-  guildCreate[1].addUsers(userCreate[1]);
+  console.log(userCreate[0]);
+  console.log(guildCreate[0]);
+  console.log(checkCreate[0]);
 
   for (let i = 0; i < userCreate.length; i++) {
-    guildCreate[Math.floor(Math.random() * 2)].addUsers(userCreate[i]);
+    guildCreate[Math.floor(Math.random() * guildCreate.length)].addUsers(userCreate[i]);
+  }
+
+  for (let i = 0; i < checkCreate.length; i++) {
+    userCreate[Math.floor(Math.random() * userCreate.length)].addCheck(checkCreate[i]);
   }
 
   console.log("Users injected");
