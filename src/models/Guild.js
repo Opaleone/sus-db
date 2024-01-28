@@ -7,6 +7,7 @@ const Guild = db.define(
       type: DataTypes.BIGINT,
       allowNull: false
     },
+    guildName: DataTypes.STRING,
     checkAmount: DataTypes.INTEGER,
     channelId: DataTypes.BIGINT,
   }
