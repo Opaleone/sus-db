@@ -5,6 +5,6 @@ const checkRoutes = require('./check');
 
 router.use('/user', userRoutes);
 router.use('/guild', guildRoutes);
-router.use('/check', checkRoutes);
+router.use('/checks', checkRoutes);
 
 module.exports = router;
