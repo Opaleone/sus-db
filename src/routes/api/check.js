@@ -1,8 +1,8 @@
 const express = require('express');
 const checkRouter = express.Router();
-const fs = require('fs')
+const fs = require('fs');
 
-const { Check } = require('../../models');
+const { Check, User, Guild } = require('../../models');
 
 checkRouter.get('/', async (req, res, next) => {
   try {
@@ -21,20 +21,25 @@ checkRouter.get('/', async (req, res, next) => {
   }
 })
 
-checkRouter.get('/:checkId', async (req, res, next) => {
-  const { checkId } = req.params;
+checkRouter.get('/:uid/:gid', async (req, res, next) => {
+  const { uid, gid } = req.params;
 
   try {
-    const getCheck = await Check.findByPk(checkId);
+    const getCheck = await Check.findAll({
+      where: {
+        UserId: uid,
+        GuildId: gid
+      }
+    });
 
     if (!getCheck) {
-      throw new Error(`No check with id of ${checkId}`);
+      throw new Error(`No check with id of ${uid}`);
     }
 
     res.status(200).json(getCheck);
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} :: check - get (Path: '/:checkId') ::\n`;
+    const msg = `${todayDate}: ${e.message} :: check - get (Path: '/:uid') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);
@@ -44,13 +49,44 @@ checkRouter.get('/:checkId', async (req, res, next) => {
   }
 })
 
-checkRouter.post('/check', async (req, res, next) => {
+checkRouter.post('/', async (req, res, next) => {
+  const { uid, gid, username, guildname, size, status } = req.body;
   try {
-    await Check.create({
-      ...req.body
+    let curGuild = await Guild.findOne({
+      where: {
+        guildId: gid
+      }
     })
 
-    res.status(200).send(`[SUCCESS] Check with id ${checkId} successfully created`);
+    let curUser = await User.findOne({
+      where: {
+        userId: uid
+      }
+    })
+
+    if (!curGuild) {
+      curGuild = await Guild.create({
+        guildId: gid,
+        guildName: guildname
+      })
+    }
+
+    if (!curUser) {
+      curUser = await User.create({
+        userId: uid,
+        userName: username,
+      })
+    }
+
+    const newCheck = await Check.create({
+      size: size,
+      status: status
+    })
+
+    newCheck.setUser(curUser);
+    newCheck.setGuild(curGuild);
+
+    res.status(200).send(`[SUCCESS] Check successfully created for user with id ${uid}`);
   } catch (e) {
     const todayDate = new Date().toJSON();
     const msg = `${todayDate}: ${e.message} :: check - post (Path: '/:checkId') ::\n`;
