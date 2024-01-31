@@ -11,6 +11,12 @@ const User = db.define(
       type: DataTypes.STRING,
       allowNull: false
     },
+    currentCheck: {
+      type: DataTypes.UUID,
+      set(checkId) {
+        this.setDataValue(checkId);
+      }
+    }
   },
   {
     timestamps: true
