@@ -4,35 +4,57 @@ const { db } = require('../db/connection');
 (async function seed() {
   const users = [
     {
-      userId: 109922839488994,
+      userId: 1099228394889943889n,
       userName: 'cycle_',
     },
     {
-      userId: 109922839427283,
+      userId: 109922839427283122n,
       userName: 'opal0744',
     },
     {
-      userId: 109922839481029,
+      userId: 1099228394810291233n,
       userName: '.gigglet',
     },
     {
-      userId: 109922839421928,
+      userId: 109922839421928283774n,
       userName: 'hemmie49',
     },
     {
-      userId: 109922839418293,
+      userId: 109922839418293192002n,
       userName: 'fred_wad',
     },
+    {
+      userId: 1029383854950410029n,
+      userName: 'MammothChunks'
+    },
+    {
+      userId: 1029383854950410122n,
+      userName: 'MammothChunks'
+    },
+    {
+      userId: 1029383854950410394n,
+      userName: 'MammothChunks'
+    },
+    {
+      userId: 1029383854950410293n,
+      userName: 'MammothChunks'
+    },
+    {
+      userId: 1029383854950410857n,
+      userName: 'MammothChunks'
+    }
   ]
 
   const guilds = [
     {
-      guildId: 1029834572733,
-      channelId: null,
+      guildId: 690308107007557652n,
+      guildName: 'THE BOIS',
+      channelId: 1171394157475008572n,
       checkAmount: 1,
     },
     {
-      guildId: 10298345782383,
+      guildId: 998648963064410132n,
+      guildName: 'MammothChunks\'s Server',
       channelId: null,
       checkAmount: null,
     }
@@ -67,20 +89,24 @@ const { db } = require('../db/connection');
 
 
   await db.sync({ force: true });
-  const userCreate = await User.bulkCreate(users);
   const guildCreate = await Guild.bulkCreate(guilds);
+  const userCreate = await User.bulkCreate(users);
   const checkCreate = await Check.bulkCreate(checks);
 
-  console.log(userCreate[0]);
-  console.log(guildCreate[0]);
-  console.log(checkCreate[0]);
+  for (const check of checkCreate) {
+    const randUserIdx = Math.floor(Math.random() * userCreate.length)
+    const randGuildIdx = Math.floor(Math.random() * guildCreate.length)
 
-  for (let i = 0; i < userCreate.length; i++) {
-    guildCreate[Math.floor(Math.random() * guildCreate.length)].addUsers(userCreate[i]);
-  }
+    const curUser = userCreate[randUserIdx];
+    const curGuild = guildCreate[randGuildIdx];
 
-  for (let i = 0; i < checkCreate.length; i++) {
-    userCreate[Math.floor(Math.random() * userCreate.length)].addCheck(checkCreate[i]);
+    curGuild.addUser(curUser);
+    curUser.addGuild(curGuild);
+
+    userCreate.splice(randUserIdx, 1);
+
+    check.setUser(curUser);
+    check.setGuild(curGuild);
   }
 
   console.log("Users injected");
