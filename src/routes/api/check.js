@@ -1,8 +1,8 @@
+const { Check } = require('../../models');
+const { confirmCreate } = require('../../../utils/confirmCreate');
 const express = require('express');
 const checkRouter = express.Router();
 const fs = require('fs');
-
-const { Check, User, Guild } = require('../../models');
 
 checkRouter.get('/', async (req, res, next) => {
   try {
@@ -52,31 +52,7 @@ checkRouter.get('/:uid/:gid', async (req, res, next) => {
 checkRouter.post('/', async (req, res, next) => {
   const { uid, gid, username, guildname, size, status } = req.body;
   try {
-    let curGuild = await Guild.findOne({
-      where: {
-        guildId: gid
-      }
-    })
-
-    let curUser = await User.findOne({
-      where: {
-        userId: uid
-      }
-    })
-
-    if (!curGuild) {
-      curGuild = await Guild.create({
-        guildId: gid,
-        guildName: guildname
-      })
-    }
-
-    if (!curUser) {
-      curUser = await User.create({
-        userId: uid,
-        userName: username,
-      })
-    }
+    const { curGuild, curUser } = confirmCreate(uid, gid, username, guildname);
 
     const newCheck = await Check.create({
       size: size,
