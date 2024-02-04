@@ -25,18 +25,18 @@ checkRouter.get('/:uid/:gid', async (req, res, next) => {
   const { uid, gid } = req.params;
 
   try {
-    const getCheck = await Check.findAll({
+    const getChecks = await Check.findAll({
       where: {
         UserId: uid,
         GuildId: gid
       }
     });
 
-    if (!getCheck) {
+    if (!getChecks) {
       throw new Error(`No check with id of ${uid}`);
     }
 
-    res.status(200).json(getCheck);
+    res.status(200).json(getChecks);
   } catch (e) {
     const todayDate = new Date().toJSON();
     const msg = `${todayDate}: ${e.message} :: check - get (Path: '/:uid') ::\n`;
