@@ -8,6 +8,12 @@ checkRouter.get('/', async (req, res, next) => {
   try {
     const allChecks = await Check.findAll();
 
+    if (!allChecks) {
+      const e = new Error("No checks found!");
+      e.code = 404;
+      throw e;
+    }
+
     res.status(200).json(allChecks);
   } catch (e) {
     const todayDate = new Date().toJSON();
@@ -17,35 +23,39 @@ checkRouter.get('/', async (req, res, next) => {
       console.log(err);
     })
 
-    res.status(500).send('[FAILED] Check error log');
+    res.status(e.code).send(e.message);
   }
 })
 
-checkRouter.get('/:uid/:gid', async (req, res, next) => {
-  const { uid, gid } = req.params;
+checkRouter.get('/allUserChecks', async (req, res, next) => {
+  const { uid, gid, username, guildname } = req.body;
+
+  const { curGuild, curUser } = await confirmCreate(uid, gid, username, guildname);
 
   try {
     const getChecks = await Check.findAll({
       where: {
-        UserId: uid,
-        GuildId: gid
+        UserId: curUser.id,
+        GuildId: curGuild.id
       }
     });
 
-    if (!getChecks) {
-      throw new Error(`No check with id of ${uid}`);
+    if (!getChecks.length) {
+      const error = new Error(`No checks for user id: [${uid}] in guild with id: [${gid}]`);
+      error.code = 404;
+      throw error;
     }
 
     res.status(200).json(getChecks);
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} :: check - get (Path: '/:uid') ::\n`;
+    const msg = `${todayDate}: ${e.message} :: check - get (Path: '/allUserChecks') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);
     })
 
-    res.status(500).send('[FAILED] Check error log');
+    res.status(e.code).send(e.message);
   }
 })
 
@@ -71,7 +81,7 @@ checkRouter.post('/', async (req, res, next) => {
       console.log(err);
     })
 
-    res.status(500).send('[FAILED] Check error log');
+    res.status(500).send(e.message);
   }
 })
 
@@ -86,7 +96,9 @@ checkRouter.delete('/:checkId', async (req, res, next) => {
     })
 
     if (!deleteCheck) {
-      throw new Error(`No check with id of ${checkId}`);
+      const e = new Error(`No check with id of ${checkId}`);
+      e.code = 404;
+      throw e;
     }
 
     res.status(200).send(`[SUCCESS] Check with id ${checkId} successfully deleted`);
@@ -98,7 +110,7 @@ checkRouter.delete('/:checkId', async (req, res, next) => {
       console.log(err);
     })
 
-    res.status(500).send('[FAILED] Check error log');
+    res.status(e.code).send(e.message);
   }
 })
 
