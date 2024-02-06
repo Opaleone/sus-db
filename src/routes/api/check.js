@@ -52,15 +52,15 @@ checkRouter.get('/:uid/:gid', async (req, res, next) => {
 checkRouter.post('/', async (req, res, next) => {
   const { uid, gid, username, guildname, size, status } = req.body;
   try {
-    const { curGuild, curUser } = confirmCreate(uid, gid, username, guildname);
+    const { curGuild, curUser } = await confirmCreate(uid, gid, username, guildname);
 
     const newCheck = await Check.create({
       size: size,
       status: status
     })
 
-    newCheck.setUser(curUser);
-    newCheck.setGuild(curGuild);
+    await newCheck.setUser(curUser);
+    await newCheck.setGuild(curGuild);
 
     res.status(200).send(`[SUCCESS] Check successfully created for user with id ${uid}`);
   } catch (e) {
