@@ -25,23 +25,23 @@ const { db } = require('../db/connection');
     },
     {
       userId: 1029383854950410029n,
-      userName: 'MammothChunks'
+      userName: 'Jesse'
     },
     {
       userId: 1029383854950410122n,
-      userName: 'MammothChunks'
+      userName: 'James'
     },
     {
       userId: 1029383854950410394n,
-      userName: 'MammothChunks'
+      userName: 'Jason'
     },
     {
       userId: 1029383854950410293n,
-      userName: 'MammothChunks'
+      userName: 'Lilah'
     },
     {
       userId: 1029383854950410857n,
-      userName: 'MammothChunks'
+      userName: 'Sam'
     }
   ]
 
@@ -93,20 +93,23 @@ const { db } = require('../db/connection');
   const userCreate = await User.bulkCreate(users);
   const checkCreate = await Check.bulkCreate(checks);
 
-  for (const check of checkCreate) {
-    const randUserIdx = Math.floor(Math.random() * userCreate.length)
-    const randGuildIdx = Math.floor(Math.random() * guildCreate.length)
+  for (let i = 0; i < userCreate.length; i++) {
+    if (i % 2 === 0) await guildCreate[0].addUser(userCreate[i]);
+    else await guildCreate[1].addUser(userCreate[i]);
+  }
 
-    const curUser = userCreate[randUserIdx];
-    const curGuild = guildCreate[randGuildIdx];
+  for (let i = 0, j = 0; i < 1; i++, j++) {
+    const usr = userCreate[j];
+    let curUser = await User.findOne({
+      where: {
+        userName: usr.userName
+      },
+      include: Guild
+    })
 
-    curGuild.addUser(curUser);
-    curUser.addGuild(curGuild);
+    console.log(curUser);
 
-    userCreate.splice(randUserIdx, 1);
-
-    check.setUser(curUser);
-    check.setGuild(curGuild);
+    checkCreate[i].setUser(curUser);
   }
 
   console.log("Users injected");
