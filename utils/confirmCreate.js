@@ -2,24 +2,17 @@ const { User, Guild } = require('../src/models');
 
 module.exports = {
   confirmCreate: async (uid, gid, uname, gname) => {
-    let curGuild = await Guild.findOne({
-      where: {
-        guildId: gid
-      }
-    })
-
     let curUser = await User.findOne({
       where: {
         userId: uid
       }
     })
 
-    if (!curGuild) {
-      curGuild = await Guild.create({
-        guildId: gid,
-        guildName: gname
-      })
-    }
+    let curGuild = await Guild.findOne({
+      where: {
+        guildId: gid
+      }
+    })
 
     if (!curUser) {
       curUser = await User.create({
@@ -28,8 +21,14 @@ module.exports = {
       })
     }
 
+    if (!curGuild) {
+      curGuild = await Guild.create({
+        guildId: gid,
+        guildName: gname
+      })
+    }
+
     curGuild.addUser(curUser);
-    curUser.addGuild(curGuild);
 
     return { curGuild, curUser };
   }
