@@ -70,4 +70,38 @@ guildRouter.post('/:guildId', async (req, res, next) => {
   }
 })
 
+guildRouter.put('/edit', async (req, res, next) => {
+  const { guildId, channelId, checkAmount } = req.body;
+
+  try {
+    const curGuild = await Guild.findOne({
+      where: {
+        guildId: guildId
+      }
+    })
+
+    if (!curGuild) {
+      const e = new Error(`No guild with id: ${guildId}`);
+      e.code = 404;
+      throw e;
+    }
+
+    curGuild.update({
+      channelId: channelId,
+      checkAmount: checkAmount
+    })
+
+    res.status(200).json(curGuild);
+  } catch (e) {
+    const todayDate = new Date().toJSON();
+    const msg = `${todayDate}: ${e.message} :: guild - put (Path: '/edit') ::\n`;
+
+    fs.appendFile('errors.log', msg, err => {
+      console.log(err);
+    })
+
+    res.status(e.code).send(e.message);
+  }
+})
+
 module.exports = guildRouter;
