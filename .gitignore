@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 plan.txt
+
+db.sqlite
