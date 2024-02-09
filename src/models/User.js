@@ -4,7 +4,7 @@ const User = db.define(
   'User',
   {
     userId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
       allowNull: false
     },
     userName: {

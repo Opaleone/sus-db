@@ -4,12 +4,12 @@ const Guild = db.define(
   'Guild',
   {
     guildId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING,
       allowNull: false
     },
     guildName: DataTypes.STRING,
     checkAmount: DataTypes.INTEGER,
-    channelId: DataTypes.BIGINT,
+    channelId: DataTypes.STRING,
   }
 )
 
