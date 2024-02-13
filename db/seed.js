@@ -4,56 +4,56 @@ const { db } = require('../db/connection');
 (async function seed() {
   const users = [
     {
-      userId: 1099228394889943889n,
+      userId: '1099228394889943889',
       userName: 'cycle_',
     },
     {
-      userId: 109922839427283122n,
+      userId: '109922839427283122',
       userName: 'opal0744',
     },
     {
-      userId: 1099228394810291233n,
+      userId: '1099228394810291233n',
       userName: '.gigglet',
     },
     {
-      userId: 109922839421928283774n,
+      userId: '109922839421928283774',
       userName: 'hemmie49',
     },
     {
-      userId: 109922839418293192002n,
+      userId: '109922839418293192002',
       userName: 'fred_wad',
     },
     {
-      userId: 1029383854950410029n,
+      userId: '1029383854950410029',
       userName: 'Jesse'
     },
     {
-      userId: 1029383854950410122n,
+      userId: '1029383854950410122',
       userName: 'James'
     },
     {
-      userId: 1029383854950410394n,
+      userId: '1029383854950410394',
       userName: 'Jason'
     },
     {
-      userId: 1029383854950410293n,
+      userId: '1029383854950410293',
       userName: 'Lilah'
     },
     {
-      userId: 1029383854950410857n,
+      userId: '1029383854950410857',
       userName: 'Sam'
     }
   ]
 
   const guilds = [
     {
-      guildId: 690308107007557652n,
+      guildId: '690308107007557652',
       guildName: 'THE BOIS',
-      channelId: 1171394157475008572n,
+      channelId: '1171394157475008572',
       checkAmount: 1,
     },
     {
-      guildId: 998648963064410132n,
+      guildId: '998648963064410132',
       guildName: 'MammothChunks\'s Server',
       channelId: null,
       checkAmount: null,
