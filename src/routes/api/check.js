@@ -54,6 +54,34 @@ checkRouter.get('/allUserChecks', async (req, res, next) => {
   }
 })
 
+checkRouter.get('/todayChecks', async (req, res, next) => {
+  const { uid, gid, username, guildname } = req.query;
+
+  const { curGuild, curUser } = await confirmCreate(uid, gid, username, guildname);
+
+  try {
+    const getChecks = await Check.findAll({
+      where: {
+        date: new Date().toLocaleDateString(),
+        UserId: curUser.id,
+        GuildId: curGuild.id
+      }
+    });
+
+    if (!getChecks.length) res.status(200).json({}); 
+    else res.status(200).json(getChecks);
+  } catch (e) {
+    const todayDate = new Date().toJSON();
+    const msg = `${todayDate}: ${e.message} :: check - get (Path: '/todayChecks') ::\n`;
+
+    fs.appendFile('errors.log', msg, err => {
+      console.log(err);
+    })
+
+    res.status(500).send(e.message);
+  }
+})
+
 checkRouter.post('/', async (req, res, next) => {
   const { uid, gid, username, guildname, size, status } = req.body;
   try {

@@ -4,8 +4,8 @@ const Check = db.define(
   'Check',
   {
     date: {
-      type: DataTypes.DATE,
-      defaultValue: new Date()
+      type: DataTypes.STRING,
+      defaultValue: new Date().toLocaleDateString(),
     },
     size: DataTypes.INTEGER,
     status: DataTypes.STRING,
