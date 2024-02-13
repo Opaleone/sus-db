@@ -40,9 +40,8 @@ checkRouter.get('/allUserChecks', async (req, res, next) => {
       }
     });
 
-    if (!getChecks.length) {
-      res.status(200).json({});
-    } else res.status(200).json(getChecks);
+    if (!getChecks.length) res.status(200).json({}); 
+    else res.status(200).json(getChecks);
   } catch (e) {
     const todayDate = new Date().toJSON();
     const msg = `${todayDate}: ${e.message} :: check - get (Path: '/allUserChecks') ::\n`;
