@@ -27,18 +27,21 @@ userRouter.get('/:userId/:userName', async (req, res, next) => {
   const { userId, userName } = req.params;
 
   try {
-    const user = await User.findByPk(userId);
+    let user = await User.findOne({
+      where: {
+        userId: userId,
+        userName: userName
+      }
+    });
 
     if (!user) {
-      const newUser = await User.create({
+      user = await User.create({
         userId: userId,
         userName: userName
       })
-
-      res.send({ user: newUser });
     }
 
-    res.send({ user: user })
+    res.status(200).json(user);
   } catch (e) {
     const todayDate = new Date().toJSON();
     const msg = `${todayDate}: ${e.message} :: user - get (Path: '/userId/userName') ::\n`;
@@ -55,7 +58,7 @@ userRouter.post('/:userid/:userName', async (req, res, next) => {
   const { userId, userName } = req.params;
 
   try {
-    const user = await User.create(
+    await User.create(
       {
         userId: userId,
         userName: userName

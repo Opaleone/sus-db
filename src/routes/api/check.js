@@ -28,7 +28,7 @@ checkRouter.get('/', async (req, res, next) => {
 })
 
 checkRouter.get('/allUserChecks', async (req, res, next) => {
-  const { uid, gid, username, guildname } = req.body;
+  const { uid, gid, username, guildname } = req.query;
 
   const { curGuild, curUser } = await confirmCreate(uid, gid, username, guildname);
 
@@ -41,12 +41,8 @@ checkRouter.get('/allUserChecks', async (req, res, next) => {
     });
 
     if (!getChecks.length) {
-      const error = new Error(`No checks for user id: [${uid}] in guild with id: [${gid}]`);
-      error.code = 404;
-      throw error;
-    }
-
-    res.status(200).json(getChecks);
+      res.status(200).json({});
+    } else res.status(200).json(getChecks);
   } catch (e) {
     const todayDate = new Date().toJSON();
     const msg = `${todayDate}: ${e.message} :: check - get (Path: '/allUserChecks') ::\n`;
@@ -72,10 +68,10 @@ checkRouter.post('/', async (req, res, next) => {
     await newCheck.setUser(curUser);
     await newCheck.setGuild(curGuild);
 
-    res.status(200).send(`[SUCCESS] Check successfully created for user with id ${uid}`);
+    res.status(200).json(newCheck);
   } catch (e) {
     const todayDate = new Date().toJSON();
-    const msg = `${todayDate}: ${e.message} :: check - post (Path: '/:checkId') ::\n`;
+    const msg = `${todayDate}: ${e.message} :: check - post (Path: '/') ::\n`;
 
     fs.appendFile('errors.log', msg, err => {
       console.log(err);

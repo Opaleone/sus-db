@@ -22,18 +22,21 @@ guildRouter.get('/', async (req, res, next) => {
   }
 })
 
-guildRouter.get('/:guildId', async (req, res, next) => {
-  const { guildId } = req.params;
+guildRouter.get('/:guildId/:guildName', async (req, res, next) => {
+  const { guildId, guildName } = req.params;
 
   try {
-    const getGuild = await Guild.findOne({
+    let getGuild = await Guild.findOne({
       where: {
         guildId: guildId
       }
     });
 
     if (!getGuild) {
-      throw new Error(`No guild with id of ${guildId}`);
+      getGuild = await Guild.create({
+        guildId: guildId,
+        guildName: guildName
+      })
     }
 
     res.status(200).json(getGuild);
@@ -71,19 +74,25 @@ guildRouter.post('/:guildId', async (req, res, next) => {
 })
 
 guildRouter.put('/edit', async (req, res, next) => {
-  const { guildId, channelId, checkAmount } = req.body;
+  const { guildId, guildName, channelId, checkAmount } = req.body;
 
   try {
-    const curGuild = await Guild.findOne({
+    let curGuild = await Guild.findOne({
       where: {
         guildId: guildId
       }
     })
 
     if (!curGuild) {
-      const e = new Error(`No guild with id: ${guildId}`);
-      e.code = 404;
-      throw e;
+      curGuild = await Guild.create({
+        guildId: guildId,
+        guildName: guildName,
+        channelId: channelId,
+        checkAmount: checkAmount
+      })
+
+      res.status(200).json(curGuild);
+      return;
     }
 
     curGuild.update({
