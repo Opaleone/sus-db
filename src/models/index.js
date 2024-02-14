@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Guild = require('../models/Guild');
 const Check = require('../models/Check')
+const Suspicious = require('../models/Suspicious');
+const Responses = require('../models/Responses');
 
 User.belongsToMany(Guild, { through: 'user_guild'})
 User.hasMany(Check);
@@ -14,5 +16,7 @@ Check.belongsTo(Guild);
 module.exports = {
   User,
   Guild,
-  Check
+  Check,
+  Suspicious,
+  Responses
 }
