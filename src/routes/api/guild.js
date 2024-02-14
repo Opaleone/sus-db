@@ -109,7 +109,7 @@ guildRouter.put('/edit', async (req, res, next) => {
       console.log(err);
     })
 
-    res.status(e.code).send(e.message);
+    res.status(500).send(e.message);
   }
 })
 
