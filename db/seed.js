@@ -2,6 +2,7 @@ const { User, Guild, Check } = require('../src/models');
 const { db } = require('../db/connection');
 
 (async function seed() {
+  await db.sync();
   const users = [
     {
       userId: '1099228394889943889',
