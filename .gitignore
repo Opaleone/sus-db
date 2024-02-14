@@ -132,3 +132,5 @@ dist
 plan.txt
 
 db.sqlite
+
+wordsAndPhrases.json
