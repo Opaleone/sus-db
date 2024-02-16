@@ -1,8 +1,8 @@
 const { app } = require('./src/app');
 const { db } = require('./db/connection');
-const PORT = 3001;
+const config = require('./config.json')
 
-app.listen(PORT, () => {
+app.listen(config.PORT, () => {
   db.sync();
-  console.log(`Listening at https://localhost:${PORT}`);
+  console.log(`Listening at ${config.baseUrl}${config.PORT}`);
 })
