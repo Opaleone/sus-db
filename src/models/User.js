@@ -17,7 +17,6 @@ const User = db.define(
         this.setDataValue(checkId);
       }
     },
-    count: DataTypes.INTEGER
   },
   {
     timestamps: true
