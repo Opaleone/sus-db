@@ -3,9 +3,9 @@ const { db, DataTypes } = require('../../db/connection');
 const Check = db.define(
   'Check',
   {
-    date: {
+    date: { 
       type: DataTypes.STRING,
-      defaultValue: new Date().toLocaleDateString(),
+      allowNull: false
     },
     size: DataTypes.INTEGER,
     status: DataTypes.STRING,

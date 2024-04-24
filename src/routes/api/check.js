@@ -83,11 +83,12 @@ checkRouter.get('/todayChecks', async (req, res, next) => {
 })
 
 checkRouter.post('/', async (req, res, next) => {
-  const { uid, gid, username, guildname, size, status } = req.body;
+  const { uid, gid, username, guildname, date, size, status } = req.body;
   try {
     const { curGuild, curUser } = await confirmCreate(uid, gid, username, guildname);
 
     const newCheck = await Check.create({
+      date: date,
       size: size,
       status: status
     })
