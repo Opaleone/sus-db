@@ -1,6 +1,6 @@
 {
   "name": "sus-db",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Db for js-sus-bot",
   "main": "server.js",
   "scripts": {
