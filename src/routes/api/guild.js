@@ -83,6 +83,8 @@ guildRouter.put('/edit', async (req, res, next) => {
       }
     })
 
+    console.log();
+
     if (!curGuild) {
       curGuild = await Guild.create({
         guildId: guildId,
@@ -96,8 +98,8 @@ guildRouter.put('/edit', async (req, res, next) => {
     }
 
     curGuild.update({
-      channelId: channelId,
-      checkAmount: checkAmount
+      channelId: channelId ?? curGuild.channelId,
+      checkAmount: checkAmount ?? curGuild.checkAmount
     })
 
     res.status(200).json(curGuild);
