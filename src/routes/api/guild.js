@@ -83,8 +83,6 @@ guildRouter.put('/edit', async (req, res, next) => {
       }
     })
 
-    console.log();
-
     if (!curGuild) {
       curGuild = await Guild.create({
         guildId: guildId,
